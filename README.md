@@ -1,4 +1,4 @@
-# CMP: Cross-Modal Pose-aware framework for Text-based Person Anomaly Search
+# (ICCV 2025) CMP: Cross-Modal Pose-aware framework for Text-based Person Anomaly Search
 
 
 **[Beyond Walking: A Large-Scale Image-Text Benchmark 
@@ -6,6 +6,7 @@ for Text-based Person Anomaly Search](https://arxiv.org/abs/2411.17776).
 Shuyu Yang, Yaxiong Wang, Li Zhu, Zhedong Zheng. arXiv 2024.**
 
 
+- Jun 2025: Our paper has been accepted to **ICCV 2025**
 - Mar 2025: Release attribute annotation of PAB
 - Dec 2024: Release official PyTorch implementation, CMP checkpoints, and PAB dataset
 - Nov 2024: Release preprint in [arXiv](https://arxiv.org/abs/2411.17776)
