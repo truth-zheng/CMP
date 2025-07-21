@@ -94,6 +94,7 @@ This is Overview of our Cross-Modal Pose-aware (CMP) framework.
 
 The checkpoints `cmp.pth` and training log have been released at
 [Google Drive](https://drive.google.com/drive/folders/1qdOIwyXD72gbccqGGRxvqg4gWEVI2ceA?usp=sharing).
+& [Baidu Yun](https://pan.baidu.com/s/18x-kwybNq6Jdfe5s2U4Tgw?pwd=d4ba) [d4ba].
 
 
 ## Usage
