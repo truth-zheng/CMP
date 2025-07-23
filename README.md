@@ -89,7 +89,7 @@ Annotation format:
 
 ## Models and Weights
 
-This is Overview of our Cross-Modal Pose-aware (CMP) framework. 
+This is an overview of our proposed Cross-Modal Pose-aware (CMP) framework. 
 <div align="center"><img src="assets/framework.jpg" width="900"></div>
 
 The checkpoints `cmp.pth` and training log have been released at
