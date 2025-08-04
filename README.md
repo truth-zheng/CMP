@@ -1,4 +1,4 @@
-# (ICCV 2025) CMP: Cross-Modal Pose-aware framework for Text-based Person Anomaly Search
+# (ICCV 2025 Highlight) CMP: Cross-Modal Pose-aware framework for Text-based Person Anomaly Search
 
 
 **[Beyond Walking: A Large-Scale Image-Text Benchmark 
