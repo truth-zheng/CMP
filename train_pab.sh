@@ -1,0 +1,1 @@
+python3 run.py --task "cmp_PABfintune" --dist "f2" --output_dir "output/cmp_PABfintune" --checkpoint "../checkpoint/16m_base_model_state_step_199999.th"

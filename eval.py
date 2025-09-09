@@ -31,7 +31,6 @@ def evaluation_itc(model, data_loader, tokenizer, device, config):
         text_embed = model.get_text_embeds(text_input.input_ids, text_input.attention_mask)
         text_feat = model.get_text_feat(text_embed)
         text_feat = F.normalize(text_feat, dim=-1)
-
         text_embeds.append(text_embed)
         text_atts.append(text_input.attention_mask)
         text_feats.append(text_feat)
@@ -69,11 +68,11 @@ def evaluation_itc(model, data_loader, tokenizer, device, config):
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Computing features time {}'.format(total_time_str))
 
-    return sims_matrix_t2i, image_embeds, text_embeds, text_atts
+    return sims_matrix_t2i, image_embeds, text_embeds, text_atts, image_feats, text_feats
 
 
 @torch.no_grad()
-def evaluation_itm(model, device, config, args, sims_matrix, image_embeds, text_embeds, text_atts):
+def evaluation_itm(model, device, config, args, sims_matrix, image_embeds, text_embeds, text_atts, image_feats, text_feats):
     model.eval()
 
     metric_logger = utils.MetricLogger(delimiter="  ")
@@ -89,6 +88,14 @@ def evaluation_itm(model, device, config, args, sims_matrix, image_embeds, text_
 
     score_matrix_t2i = torch.full(sims_matrix.size(), 1000.0).to(device)
     for i, sims in enumerate(metric_logger.log_every(sims_matrix[start:end], 500, header)):
+        # topk_sim, topk_idx = sims.topk(k=config['k_test'], dim=0)
+        # encoder_output = image_embeds[topk_idx]
+        # encoder_att = torch.ones(encoder_output.size()[:-1], dtype=torch.long).to(device)
+        # output = model.get_cross_embeds(encoder_output, encoder_att,
+        #                                 text_embeds=text_embeds[start + i].repeat(config['k_test'], 1, 1),
+        #                                 text_atts=text_atts[start + i].repeat(config['k_test'], 1),)[:, 0, :]
+        # score = model.itm_head(output)[:, 1]
+        # score_matrix_t2i[start + i, topk_idx] = score
         topk_sim, topk_idx = sims.topk(k=config['k_test'], dim=0)
         encoder_output = image_embeds[topk_idx]
         encoder_att = torch.ones(encoder_output.size()[:-1], dtype=torch.long).to(device)
@@ -97,6 +104,19 @@ def evaluation_itm(model, device, config, args, sims_matrix, image_embeds, text_
                                         text_atts=text_atts[start + i].repeat(config['k_test'], 1),)[:, 0, :]
         score = model.itm_head(output)[:, 1]
         score_matrix_t2i[start + i, topk_idx] = score
+        # topk_sim, topk_idx = sims.topk(k=config['k_test'], dim=0)
+
+        # encoder_output = image_feats[start + i].repeat(config['k_test'], 1, 1)
+        # encoder_att = torch.ones(encoder_output.size()[:-1], dtype=torch.long).to(device)
+        # output = model.text_encoder(encoder_embeds=text_feats[topk_idx],
+        #                             attention_mask=text_atts[topk_idx],
+        #                             encoder_hidden_states=encoder_output,
+        #                             encoder_attention_mask=encoder_att,
+        #                             return_dict=True,
+        #                             mode='fusion'
+        #                             )
+        # score = model.itm_head(output.last_hidden_state[:, 0, :])[:, 1]
+        # score_matrix_t2i[start + i, topk_idx] = score
 
     min_values, _ = torch.min(score_matrix_t2i, dim=1)
     replacement_tensor = min_values.view(-1, 1).expand(-1, score_matrix_t2i.size(1))

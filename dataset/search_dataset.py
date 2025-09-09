@@ -142,7 +142,7 @@ class search_train_dataset(Dataset):
 
         img_id = ann['image_id']
 
-        cap = ann['caption']
+        cap = ann['caption'] # [0]  use the first caption only for testfile trianing
         caption = pre_caption(cap, self.max_words)
 
         if self.be_hard:

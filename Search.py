@@ -79,10 +79,10 @@ def main(args, config):
                                     num_workers=[4],
                                     is_trains=[False],
                                     collate_fns=[None])[0]
-        sims_matrix_t2i, image_embeds, text_embeds, text_atts = evaluation_itc(
+        sims_matrix_t2i, image_embeds, text_embeds, text_atts, image_feats, text_feats = evaluation_itc(
             model_without_ddp, test_loader, tokenizer, device, config)
         score_test_t2i = evaluation_itm(model_without_ddp, device, config, args,
-                                        sims_matrix_t2i, image_embeds, text_embeds, text_atts)
+                                        sims_matrix_t2i, image_embeds, text_embeds, text_atts, image_feats, text_feats)
         if utils.is_main_process():
             print('evaluating result:')
             mAP(score_test_t2i, test_loader.dataset.g_pids, test_loader.dataset.q_pids)
@@ -128,10 +128,10 @@ def main(args, config):
 
             train_stats = train_model(model, train_loader, optimizer, scaler, tokenizer, epoch,
                                       device, lr_scheduler, config, mask_generator)
-            sims_matrix_t2i, image_embeds, text_embeds, text_atts = evaluation_itc(
+            sims_matrix_t2i, image_embeds, text_embeds, text_atts, image_feats, text_feats = evaluation_itc(
                 model_without_ddp, test_loader, tokenizer, device, config)
             score_test_t2i = evaluation_itm(model_without_ddp, device, config, args,
-                                            sims_matrix_t2i, image_embeds, text_embeds, text_atts,)
+                                            sims_matrix_t2i, image_embeds, text_embeds, text_atts, image_feats, text_feats)
             del sims_matrix_t2i, image_embeds, text_embeds, text_atts
 
             if utils.is_main_process():

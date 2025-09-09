@@ -99,8 +99,13 @@ class CMP(nn.Module):
 
         self.embed_dim = config['embed_dim']
         self.avgpool = nn.AdaptiveAvgPool1d(3)
-        self.vision_proj = feature_mapping(3072, self.embed_dim, config['itc_dp'])
-        self.text_proj = feature_mapping(3072, self.embed_dim, config['itc_dp'])
+        # self.vision_proj = feature_mapping(3072, self.embed_dim, config['itc_dp']) # cmp
+        self.vision_proj = nn.Linear(self.vision_width, self.embed_dim)
+        
+
+        # self.text_proj = feature_mapping(3072, self.embed_dim, config['itc_dp']) #cmp
+        self.text_proj = nn.Linear(self.text_width, self.embed_dim)
+        
         self.temp = nn.Parameter(torch.ones([]) * config['temp'])
 
         self.epsilon = config['label_smooth']
@@ -167,19 +172,21 @@ class CMP(nn.Module):
 
 
     def get_image_feat(self, image_embeds):
-        x = self.avgpool(image_embeds[:, 1:, ].transpose(1, 2))
-        x = x.transpose(1, 2)
-        x = torch.cat([x[:, 0, :], x[:, 1, :], x[:, 2, :]], dim=1)
-        image_feat = self.vision_proj(x)
-        return image_feat
+        # x = self.avgpool(image_embeds[:, 1:, ].transpose(1, 2))
+        # x = x.transpose(1, 2)
+        # x = torch.cat([x[:, 0, :], x[:, 1, :], x[:, 2, :]], dim=1)
+        # image_feat = self.vision_proj(x)
+        # return image_feat
+        return self.vision_proj(image_embeds[:, 0, :])
 
 
     def get_text_feat(self, text_embeds):
-        x = self.avgpool(text_embeds[:, 1:, ].transpose(1, 2))  # B C 3
-        x = x.transpose(1, 2)  # B 3 C
-        x = torch.cat([text_embeds[:, 0, :], x[:, 0, :], x[:, 1, :], x[:, 2, :]], dim=1)
-        text_feat = self.text_proj(x)
-        return text_feat
+        # x = self.avgpool(text_embeds[:, 1:, ].transpose(1, 2))  # B C 3
+        # x = x.transpose(1, 2)  # B 3 C
+        # x = torch.cat([text_embeds[:, 0, :], x[:, 0, :], x[:, 1, :], x[:, 2, :]], dim=1)
+        # text_feat = self.text_proj(x)
+        # return text_feat
+        return self.text_proj(text_embeds[:, 0, :])
 
 
     def get_contrastive_loss(self, image_feat, text_feat, idx):

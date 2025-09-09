@@ -1,0 +1,1 @@
+python3 run.py --task "cmp_PABfintune" --evaluate --dist "f2" --output_dir "output/cmp_PABfintune_eval"  --checkpoint "output/cmp_PABfintune/checkpoint_best.pth"
