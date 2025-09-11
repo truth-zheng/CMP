@@ -1,3 +1,5 @@
+from seed_utils import set_all_seeds
+set_all_seeds(42)
 import os
 from pathlib import Path
 import time
@@ -49,8 +51,9 @@ def main(args, config):
     torch.cuda.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
-    cudnn.deterministic = True
-    cudnn.benchmark = True
+    cudnn.deterministic = True ##  true  用来固定
+    cudnn.benchmark = False ## false 用来固定
+    os.environ['PYTHONHASHSEED'] = str(seed)
 
     print("### output_dir:", args.output_dir)
     

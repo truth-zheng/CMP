@@ -2,7 +2,6 @@
 import random
 import numpy as np
 import torch
-import tensorflow as tf
 import os
 
 def set_all_seeds(seed=42):
@@ -26,8 +25,6 @@ def set_all_seeds(seed=42):
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
     
-    # TensorFlow
-    tf.random.set_seed(seed)
     
     # 设置环境变量
     os.environ['PYTHONHASHSEED'] = str(seed)
