@@ -1,6 +1,8 @@
 import os
 import argparse
+from seed_utils import set_all_seeds
 
+set_all_seeds(42)
 
 # Set it correctly for distributed training across nodes
 NNODES = 1

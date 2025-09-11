@@ -6,14 +6,22 @@ test_file:  '../MPA/testjson/test.json'
 #test_file: 'data/PAB/annotation/test/ucc.json'
 
 
-train_file: ['../MPA/trainjson/pair_0.json',	'../MPA/trainjson/pair_1.json',
-	'../MPA/trainjson/pair_2.json', '../MPA/trainjson/pair_3.json',
-	'../MPA/trainjson/pair_4.json', '../MPA/trainjson/pair_5.json',
-	'../MPA/trainjson/pair_6.json', '../MPA/trainjson/pair_7.json',
-	'../MPA/trainjson/pair_8.json', '../MPA/trainjson/pair_9.json',
-	'../MPA/trainjson/pair_10.json', '../MPA/trainjson/pair_11.json',
-	'../MPA/trainjson/pair_12.json', '../MPA/trainjson/pair_13.json',
-	'../MPA/trainjson/pair_14.json', '../MPA/trainjson/pair_15.json',
+train_file: ['toytrainjson/pair_0.json',
+						 'toytrainjson/pair_1.json',
+						 'toytrainjson/pair_2.json',
+						 'toytrainjson/pair_3.json',
+						 'toytrainjson/pair_4.json',
+						 'toytrainjson/pair_5.json',
+						 'toytrainjson/pair_6.json',
+						 'toytrainjson/pair_7.json',
+						 'toytrainjson/pair_8.json',
+						 'toytrainjson/pair_9.json',
+						 'toytrainjson/pair_10.json',
+						 'toytrainjson/pair_11.json',
+						 'toytrainjson/pair_12.json',
+						 'toytrainjson/pair_13.json',
+						 'toytrainjson/pair_14.json',
+						 'toytrainjson/pair_15.json',
 ]
 
 
