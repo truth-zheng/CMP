@@ -1,0 +1,1 @@
+python3 run.py --task "cmp_realv5_yolo_toy" --evaluate --dist "f2" --output_dir "output/toy_eval" --checkpoint "../checkpoint/16m_base_model_state_step_199999.th"

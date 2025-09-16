@@ -28,7 +28,7 @@ def get_dist_launch(args):
             "--nnodes={:} --node_rank={:} " \
             "--master_addr={:} --master_port={:} ".format(NNODES, NODE_RANK, MASTER_ADDR, MASTER_PORT)
     elif args.dist == 'f2':
-        return "CUDA_VISIBLE_DEVICES=0,2 WORLD_SIZE=2 python3 -m torch.distributed.run --nproc_per_node=2 " \
+        return "CUDA_VISIBLE_DEVICES=0,1 WORLD_SIZE=2 python3 -m torch.distributed.run --nproc_per_node=2 " \
                "--nnodes={:} --node_rank={:} " \
                "--master_addr={:} --master_port={:} ".format(NNODES, NODE_RANK, MASTER_ADDR, MASTER_PORT)
     elif args.dist.startswith('gpu'):  # use one gpu, --dist "gpu0"
