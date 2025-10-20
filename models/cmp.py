@@ -151,6 +151,7 @@ class CMP(nn.Module):
 
     def get_vision_embeds(self, image):
         image_embeds = self.vision_encoder(image)
+        # print(f"Vision encoder output shape: {image_embeds.shape}")  # Vision encoder output shape: torch.Size([22, 50, 1024])
         image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(image.device)
         return image_embeds, image_atts
 

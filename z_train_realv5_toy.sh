@@ -1,1 +1,1 @@
-python3 run.py --task "cmp_realv5_yolo_toy" --dist "f2" --output_dir "output/realv5_yolotoy_testtoy_2" --checkpoint "../checkpoint/16m_base_model_state_step_199999.th"
+python3 run.py --task "cmp_realv5_yolo_toy" --dist "f2" --output_dir "output/realv5_yolotoy_testtoy_noyolo" --checkpoint "../checkpoint/16m_base_model_state_step_199999.th"

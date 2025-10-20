@@ -1,30 +1,19 @@
 # image_root: '../58/PAB/'
 # test_file: '../58/PAB/annotation/test/attr.json'
 image_root: '../59/MPA/'
-test_file:  'testjson/test_toy.json'
+test_file:  '../59/MPA/testjson/test.json'
 # OOD test set
 #test_file: 'data/PAB/annotation/test/ucc.json'
 
-
-train_file: ['toytrainjson/pair_0.json',
-						 'toytrainjson/pair_1.json',
-						 'toytrainjson/pair_2.json',
-						 'toytrainjson/pair_3.json',
-						 'toytrainjson/pair_4.json',
-						 'toytrainjson/pair_5.json',
-						 'toytrainjson/pair_6.json',
-						 'toytrainjson/pair_7.json',
-						 'toytrainjson/pair_8.json',
-						 'toytrainjson/pair_9.json',
-						 'toytrainjson/pair_10.json',
-						 'toytrainjson/pair_11.json',
-						 'toytrainjson/pair_12.json',
-						 'toytrainjson/pair_13.json',
-						 'toytrainjson/pair_14.json',
-						 'toytrainjson/pair_15.json',
+train_file: ['../59/MPA/trainjson/pair_0.json',	'../59/MPA/trainjson/pair_1.json',
+	'../59/MPA/trainjson/pair_2.json', '../59/MPA/trainjson/pair_3.json',
+	'../59/MPA/trainjson/pair_4.json', '../59/MPA/trainjson/pair_5.json',
+	'../59/MPA/trainjson/pair_6.json', '../59/MPA/trainjson/pair_7.json',
+	'../59/MPA/trainjson/pair_8.json', '../59/MPA/trainjson/pair_9.json',
+	'../59/MPA/trainjson/pair_10.json', '../59/MPA/trainjson/pair_11.json',
+	'../59/MPA/trainjson/pair_12.json', '../59/MPA/trainjson/pair_13.json',
+	'../59/MPA/trainjson/pair_14.json', '../59/MPA/trainjson/pair_15.json',
 ]
-
-
 ## Image Encoder
 vision_config: 'configs/config_swinB.json'
 h: 224
@@ -61,7 +50,7 @@ skipgram_size: 3
 mask_whole_word: True
 
 optimizer: {opt: adamW, lr: 1e-4, weight_decay: 0.01, lr_mult: 2}
-schedular: {sched: step, lr: 1e-4, epochs: 30, num_warmup_steps: 500}
+schedular: {sched: step, lr: 1e-4, epochs: 120, num_warmup_steps: 500}
 
 k_test: 128
 
@@ -69,3 +58,6 @@ k_test: 128
 be_hard: False #True
 be_pose_img: False # True
 pose_conv: False #True
+use_yolo_gcn: True #True
+yolo_weight_path: 'weights/v11_x.pt'
+yolo_conf_threshold: 0.2

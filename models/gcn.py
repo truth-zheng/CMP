@@ -24,9 +24,9 @@ class Attention(nn.Module):
         self.proj_drop = nn.Dropout(proj_drop_ratio)
 
     def forward(self, x, pose):
-        # [batch_size, num_patches + 1, total_embed_dim]
-        print(f"x: {x.shape}, pose: {pose.shape}")
+                # print(f"x: {x.shape}, pose: {pose.shape}")
         B, N, C = x.shape
+        pose = pose.expand(-1, N, -1) 
         q = self.q(pose).reshape(B, N, 1, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         k = self.k(x).reshape(B, N, 1, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         v = self.v(x).reshape(B, N, 1, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
@@ -48,8 +48,40 @@ class Attention(nn.Module):
         x = self.proj_drop(x)
         return x
 
+    def forward2(self, x, pose):
+        # [batch_size, num_patches + 1, total_embed_dim]
+        print(f"x: {x.shape}, pose: {pose.shape}")
+        # B, N, C = x.shape
+        # q = self.q(pose).reshape(B, N, 1, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        # k = self.k(x).reshape(B, N, 1, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        # v = self.v(x).reshape(B, N, 1, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        B, Nx, C = x.shape
+        B, Np, Cp = pose.shape
 
-class Block(nn.Module):
+        q = self.q(pose)  # [B, Np, C]
+        k = self.k(x)     # [B, Nx, C]
+        v = self.v(x)     # [B, Nx, C]
+
+        # 分头
+        q = q.view(B, Np, self.num_heads, C // self.num_heads).transpose(1, 2)  # [B, heads, Np, head_dim]
+        k = k.view(B, Nx, self.num_heads, C // self.num_heads).transpose(1, 2)   # [B, heads, Nx, head_dim]
+        v = v.view(B, Nx, self.num_heads, C // self.num_heads).transpose(1, 2)   # [B, heads, Nx, head_dim]
+
+        # attention
+        attn = (q @ k.transpose(-2, -1)) * self.scale  # [B, heads, Np, Nx]
+        attn = attn.softmax(dim=-1)
+        attn = self.attn_drop(attn)
+
+        # 输出
+        out = attn @ v  # [B, heads, Np, head_dim]
+        out = out.transpose(1, 2).contiguous().view(B, Np, C)  # [B, Np, C]
+
+        # 最后线性投影
+        out = self.proj(out)
+        out = self.proj_drop(out)
+        return out
+
+class Block2(nn.Module):
     def __init__(self,
                  dim=1024,
                  num_heads=16,
@@ -58,7 +90,7 @@ class Block(nn.Module):
                  drop_ratio=0.,
                  attn_drop_ratio=0.,
                  norm_layer=nn.LayerNorm):
-        super(Block, self).__init__()
+        super(Block2, self).__init__()
         self.norm = norm_layer(dim)
         self.attn = Attention(dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale,
                               attn_drop_ratio=attn_drop_ratio, proj_drop_ratio=drop_ratio)
