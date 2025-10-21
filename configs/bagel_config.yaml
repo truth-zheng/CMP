@@ -1,0 +1,175 @@
+# BAGEL-CMP Integration Configuration
+# This configuration file defines parameters for integrating BAGEL with CMP framework
+
+# Model Configuration
+model:
+  name: "cmp_bagel"
+  feature_mode: "hybrid"  # Options: "cmp", "bagel", "hybrid"
+  embed_dim: 768
+  temp: 0.07
+
+  # Feature extraction settings
+  use_bagel: true
+  fusion_strategy: "weighted_avg"  # Options: "concat", "weighted_avg"
+  text_weight: 0.6
+  image_weight: 0.6
+
+# BAGEL Model Configuration
+bagel_config:
+  # BAGEL model parameters
+  llm_hidden_size: 1536
+  vit_hidden_size: 1024
+  num_attention_heads: 12
+  num_hidden_layers: 24
+  vocab_size: 152064
+
+  # Vision encoder settings
+  vit_num_heads: 16
+  vit_num_layers: 24
+  patch_size: 14
+  image_size: 224
+  use_vit: true
+  use_vae: false
+
+  # VAE settings (for generative features)
+  vae_z_channels: 16
+  vae_downsample: 16
+  latent_patch_size: 2
+  max_latent_size: 32
+
+  # Model checkpoint
+  checkpoint_path: null  # Set path to BAGEL checkpoint file
+
+  # Feature extraction settings
+  max_text_length: 77
+  use_feature_aligner: true
+
+# Original CMP Configuration (maintained for compatibility)
+vision_config: "configs/vision_swin_base.json"
+text_config: "configs/text_bert_base.json"
+text_encoder: "bert-base-uncased"
+load_params: true
+
+# Training Configuration
+train:
+  batch_size_train: 32
+  batch_size_test: 64
+  max_tokens: 77
+
+  # Loss weights
+  lambda_itc: 1.0
+  lambda_itm: 1.0
+  lambda_mlm: 0.5
+
+  # Data augmentation
+  mask_prob: 0.15
+  max_masks: 5
+  skipgram_prb: 0.2
+  skipgram_size: 3
+  mask_whole_word: true
+
+# Optimizer Configuration
+optimizer:
+  name: "adamw"
+  lr: 1.0e-4
+  weight_decay: 0.01
+  warmup_steps: 1000
+
+  # Different learning rates for different components
+  lr_vis_cnn: 1.0e-5
+  lr_text_encoder: 1.0e-5
+
+# Scheduler Configuration
+scheduler:
+  name: "cosine"
+  epochs: 10
+  min_lr: 1.0e-6
+  warmup_epochs: 1
+
+# Enhanced Search Features (from original Search model)
+search_features:
+  # Pose-based enhancement
+  be_pose_img: false
+  pose_conv: false
+
+  # YOLO + GCN person detection
+  use_yolo_gcn: false
+  yolo_person_class_id: 0  # COCO person class
+  yolo_conf_threshold: 0.2
+  yolo_weight_path: null  # Path to YOLO weights
+
+  # Hard negative mining
+  be_hard: false
+
+# Evaluation Configuration
+eval:
+  k_test: 128  # Number of candidates for retrieval evaluation
+  eval_freq: 1  # Evaluation frequency (epochs)
+  save_freq: 1  # Checkpoint saving frequency (epochs)
+
+# Data Configuration
+data:
+  # Dataset paths
+  train_data_path: "data/train"
+  test_data_path: "data/test"
+
+  # Image preprocessing
+  image_res: 224
+  max_image_size: 224
+
+  # Text preprocessing
+  text_tokenizer: "bert-base-uncased"
+  max_text_length: 77
+
+# Logging and Saving
+logging:
+  output_dir: "outputs/bagel_cmp"
+  log_freq: 100  # Log every N steps
+  save_best_only: true
+
+# Distributed Training
+distributed:
+  distributed: true
+  world_size: 1
+  dist_url: "env://"
+  device: "cuda"
+
+# Hardware Configuration
+hardware:
+  num_workers: 4
+  pin_memory: true
+  mixed_precision: true  # Use automatic mixed precision
+  gradient_accumulation_steps: 1
+
+# Feature Extraction Settings
+feature_extraction:
+  # BAGEL-specific settings
+  bagel_inference_mode: "efficient"  # Options: "full", "efficient"
+  cache_features: false  # Cache extracted features
+
+  # CMP compatibility
+  itc_dp: 0.1  # Dropout for image-text contrastive
+  label_smooth: 0.1  # Label smoothing for contrastive loss
+
+# Experimental Features
+experimental:
+  # Feature fusion experiments
+  adaptive_fusion: false  # Dynamically adjust fusion weights
+
+  # Multi-scale features
+  multi_scale_vision: false
+
+  # Cross-modal attention
+  cross_modal_attention: false
+
+  # Knowledge distillation
+  distillation: false
+  teacher_model_path: null
+
+# Debug and Development
+debug:
+  enable_debug: false
+  save_debug_images: false
+  debug_output_dir: "debug_outputs"
+  log_model_stats: true
+  profile_memory: false
