@@ -22,7 +22,7 @@ from torch.optim import Optimizer
 from transformers import BertTokenizer
 
 import utils
-from models.model_search import Search
+from models.model_search_yolov11 import Search
 
 from dataset import create_dataset, create_sampler, create_loader
 from dataset.search_dataset import TextMaskingGenerator
@@ -190,7 +190,7 @@ if __name__ == '__main__':
     parser.add_argument('--world_size', default=1, type=int, help='number of distributed processes')
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     parser.add_argument('--distributed', action='store_false')
-    args = parser.parse_args()
+    args = parser.parse_arg                                                                                                        s()
 
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
 

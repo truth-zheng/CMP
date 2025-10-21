@@ -16,7 +16,7 @@ def create_dataset(config, evaluate=False):
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         normalize,
-        # RandomErasing(probability=config['erasing_p'], mean=[0.0, 0.0, 0.0])
+        RandomErasing(probability=config['erasing_p'], mean=[0.0, 0.0, 0.0])
     ])
 
     test_transform = transforms.Compose([
